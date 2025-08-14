@@ -13,3 +13,5 @@ Copy the `dot-mail-outlook.local` file to your `autoload` folder (or copy its co
 > Make sure the port is set to 587
 
 `Dot-mail` configuration **MUST** be updated to set `tls` to `STARTTLS` under the `dot_mail.default.smtp_options.tls` key, for the `AUTH XOAUTH` command.
+
+Register the `ConfigProvider` in `config/config.php`.
