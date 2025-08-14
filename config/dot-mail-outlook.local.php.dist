@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+$tenant = '';
+
+return [
+    'xoauth2_outlook' => [
+        "tokenCacheFile"  => '', // actual Bearer token
+        "tenant"          => $tenant,
+        "access_code_url" => "https://login.microsoftonline.com/{$tenant}/oauth2/v2.0/token",
+        "client_id"       => '',
+        "client_secret"   => '',
+        "scope"           => 'https://outlook.office.com/.default',
+        "grant_type"      => 'client_credentials',
+    ],
+];

@@ -1,0 +1,62 @@
+{
+  "name": "dotkernel/dot-mail-outlook",
+  "version": "0.1",
+  "type": "plugin",
+  "description": "Dotkernel Dot-Mail Outlook Plugin",
+  "license": "MIT",
+  "homepage": "https://github.com/dotkernel/dot-mail-outlook",
+  "keywords": [
+    "dotkernel",
+    "dot-mail",
+    "symfony",
+    "esmtp",
+    "xoauth2"
+  ],
+  "authors": [
+    {
+      "name": "Dotkernel Team",
+      "email": "team@dotkernel.com"
+    }
+  ],
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {
+    "ext-curl": "*",
+    "php": "~8.2.0 || ~8.3.0",
+    "dotkernel/dot-dependency-injection": "^1.2.0",
+    "dotkernel/dot-mail": "^5.1.5",
+    "laminas/laminas-servicemanager": "^3.22",
+    "symfony/mailer": "^v7.1.6"
+  },
+  "require-dev": {
+    "laminas/laminas-coding-standard": "^3.1.0",
+    "phpunit/phpunit": "^10.5.46",
+    "vimeo/psalm": "^5.23"
+  },
+  "autoload": {
+    "psr-4": {
+      "Dot\\MailOutlook\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DotTest\\MailOutlook\\": "test/"
+    }
+  },
+  "scripts": {
+    "check": [
+      "@cs-check",
+      "@test",
+      "@static-analysis"
+    ],
+    "cs-check": "phpcs",
+    "cs-fix": "phpcbf",
+    "static-analysis": "psalm --shepherd --stats",
+    "test": "phpunit --colors=always"
+  }
+}
