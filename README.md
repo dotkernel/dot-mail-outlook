@@ -6,9 +6,10 @@ Uses the "client credentials" flow from Microsoft for generating the bearer toke
 
 Copy the `dot-mail-outlook.local` file to your `autoload` folder (or copy its contents to `mail.global.php`) and fill in the relevant information.
 
-** `Dot-mail` configuration MUST use the `esmtp` transport under the `dot_mail.default.transport` key. **
-** `Dot-mail` configuration MUST use the `smtp.office365.com` host under the `dot_mail.default.smtp_options.host` key. **
+`Dot-mail` configuration **MUST** use the `esmtp` transport under the `dot_mail.default.transport` key.
+
+`Dot-mail` configuration **MUST** use the `smtp.office365.com` host under the `dot_mail.default.smtp_options.host` key.
 
 > Make sure the port is set to 587
 
-** `Dot-mail` configuration MUST be updated to set `tls` to `STARTTLS` under the `dot_mail.default.smtp_options.tls` key, for the `AUTH XOAUTH` command. **
+`Dot-mail` configuration **MUST** be updated to set `tls` to `STARTTLS` under the `dot_mail.default.smtp_options.tls` key, for the `AUTH XOAUTH` command.
