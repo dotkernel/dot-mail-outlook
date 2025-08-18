@@ -29,6 +29,7 @@ use const JSON_THROW_ON_ERROR;
 class XOauthTokenProviderService
 {
     /**
+     * @phpcs:ignore
      * @param array{
      *     tokenCacheFile: non-empty-string,
      *     tenant: non-empty-string,
@@ -40,7 +41,7 @@ class XOauthTokenProviderService
      * } $config
      */
     #[Inject("config.xoauth2_outlook")]
-    public function __construct(protected array $config = [])
+    public function __construct(protected array $config)
     {
     }
 
