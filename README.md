@@ -15,7 +15,7 @@ Dotkernel's Microsoft Outlook ESMTP email service, implementing the `client cred
 [![GitHub license](https://img.shields.io/github/license/dotkernel/dot-mail-outlook)](https://github.com/dotkernel/dot-mail-outlook/blob/0.1/LICENSE.md)
 
 [![Build Static](https://github.com/dotkernel/dot-mail-outlook/actions/workflows/continuous-integration.yml/badge.svg?branch=0.1)](https://github.com/dotkernel/dot-mail-outlook/actions/workflows/continuous-integration.yml)
-[![codecov](https://codecov.io/gh/dotkernel/dot-mail-outlook/branch/0.1/graph/badge.svg?token=G51NEHYKD3)](https://codecov.io/gh/dotkernel/dot-mail-outlook)
+[![codecov](https://codecov.io/gh/dotkernel/dot-mail-outlook/graph/badge.svg?token=TiXewEbffE)](https://codecov.io/gh/dotkernel/dot-mail-outlook)
 [![PHPStan](https://github.com/dotkernel/dot-mail-outlook/actions/workflows/static-analysis.yml/badge.svg?branch=0.1)](https://github.com/dotkernel/dot-mail/actions/workflows/static-analysis.yml)
 
 ## Installation
