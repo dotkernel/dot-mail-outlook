@@ -1,6 +1,6 @@
 # dot-mail-outlook
 
-Dotkernel's Microsoft Outlook ESMTP email service.
+Dotkernel's Microsoft Outlook ESMTP email service, using the `client credentials` grant_type. 
 
 > dot-mail-outlook is a wrapper on top of [dotkernel/dot-mail](https://github.com/dotkernel/dot-mail)
 
@@ -68,7 +68,7 @@ The `dotkernel/dot-mail` config file should be updated to make sure the necessar
 `dotkernel/dot-mail-outlook` makes use of SASL XOAUTH2 mechanism for use with the [SMTP AUTH](https://datatracker.ietf.org/doc/html/rfc4954) command.
 
 To allow generating the bearer token in the background, without user input required,
-`dot-mail-outlook` uses the "client credentials" flow from Microsoft:
+`dot-mail-outlook` uses the `client credentials` flow from Microsoft:
 
 - [Authenticate an IMAP, POP or SMTP connection using OAuth](https://learn.microsoft.com/en-us/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth)
 - [Microsoft identity platform and the OAuth 2.0 client credentials flow](https://learn.microsoft.com/en-us/entra/identity-platform/v2-oauth2-client-creds-grant-flow)
