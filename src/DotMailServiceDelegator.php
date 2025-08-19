@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Dot\MailOutlook\Transport;
+namespace Dot\MailOutlook;
 
 use Dot\Mail\Service\MailService as DotMailService;
 use Dot\MailOutlook\Authenticator\XOauth2OutlookAuthenticator;

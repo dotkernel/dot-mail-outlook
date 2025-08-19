@@ -7,7 +7,6 @@ namespace Dot\MailOutlook;
 use Dot\DependencyInjection\Factory\AttributedServiceFactory;
 use Dot\MailOutlook\Authenticator\XOauth2OutlookAuthenticator;
 use Dot\MailOutlook\Service\XOauthTokenProviderService;
-use Dot\MailOutlook\Transport\DotMailServiceDelegator;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
 
 class ConfigProvider
