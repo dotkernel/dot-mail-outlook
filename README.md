@@ -7,7 +7,7 @@ Dotkernel's Microsoft Outlook ESMTP email service.
 ## Badges
 
 ![OSS Lifecycle](https://img.shields.io/osslifecycle/dotkernel/dot-mail-outlook)
-![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-mail-outlook/0.1)
+![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-mail-outlook/dev-master)
 
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-mail-outlook)](https://github.com/dotkernel/dot-mail-outlook/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-mail-outlook)](https://github.com/dotkernel/dot-mail-outlook/network)
