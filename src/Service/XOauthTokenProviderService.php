@@ -20,7 +20,7 @@ use function json_decode;
 use function json_encode;
 use function time;
 
-use const CURLOPT_HEADER;
+use const CURLOPT_HTTPHEADER;
 use const CURLOPT_POSTFIELDS;
 use const CURLOPT_RETURNTRANSFER;
 use const CURLOPT_URL;
@@ -82,7 +82,7 @@ class XOauthTokenProviderService
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_HEADER         => 'Content-Type: application/x-www-form-urlencoded',
+            CURLOPT_HTTPHEADER     => ['Content-Type: application/x-www-form-urlencoded'],
             CURLOPT_URL            => $this->config['access_code_url'],
             CURLOPT_POSTFIELDS     => $body,
             CURLOPT_RETURNTRANSFER => true,

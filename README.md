@@ -1,6 +1,6 @@
 # dot-mail-outlook
 
-Dotkernel's Microsoft Outlook ESMTP email service, implementing the `client credentials` grant_type. 
+Dotkernel's Microsoft Outlook ESMTP email service, implementing the `client credentials` grant_type.
 
 > dot-mail-outlook is a wrapper on top of [dotkernel/dot-mail](https://github.com/dotkernel/dot-mail)
 
@@ -12,11 +12,11 @@ Dotkernel's Microsoft Outlook ESMTP email service, implementing the `client cred
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-mail-outlook)](https://github.com/dotkernel/dot-mail-outlook/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-mail-outlook)](https://github.com/dotkernel/dot-mail-outlook/network)
 [![GitHub stars](https://img.shields.io/github/stars/dotkernel/dot-mail-outlook)](https://github.com/dotkernel/dot-mail-outlook/stargazers)
-[![GitHub license](https://img.shields.io/github/license/dotkernel/dot-mail-outlook)](https://github.com/dotkernel/dot-mail-outlook/blob/0.1/LICENSE.md)
+[![GitHub license](https://img.shields.io/github/license/dotkernel/dot-mail-outlook)](https://github.com/dotkernel/dot-mail-outlook/blob/master/LICENSE.md)
 
-[![Build Static](https://github.com/dotkernel/dot-mail-outlook/actions/workflows/continuous-integration.yml/badge.svg?branch=0.1)](https://github.com/dotkernel/dot-mail-outlook/actions/workflows/continuous-integration.yml)
+[![Build Static](https://github.com/dotkernel/dot-mail-outlook/actions/workflows/continuous-integration.yml/badge.svg?branch=master)](https://github.com/dotkernel/dot-mail-outlook/actions/workflows/continuous-integration.yml)
 [![codecov](https://codecov.io/gh/dotkernel/dot-mail-outlook/graph/badge.svg?token=TiXewEbffE)](https://codecov.io/gh/dotkernel/dot-mail-outlook)
-[![PHPStan](https://github.com/dotkernel/dot-mail-outlook/actions/workflows/static-analysis.yml/badge.svg?branch=0.1)](https://github.com/dotkernel/dot-mail/actions/workflows/static-analysis.yml)
+[![PHPStan](https://github.com/dotkernel/dot-mail-outlook/actions/workflows/static-analysis.yml/badge.svg?branch=master)](https://github.com/dotkernel/dot-mail/actions/workflows/static-analysis.yml)
 
 ## Installation
 
@@ -67,7 +67,7 @@ The `dotkernel/dot-mail` config file should be updated to make sure the necessar
 
 `dotkernel/dot-mail-outlook` makes use of SASL XOAUTH2 mechanism for use with the [SMTP AUTH](https://datatracker.ietf.org/doc/html/rfc4954) command.
 
-To allow generating the bearer token in the background, without user input required,
+To allow generating the bearer token in the background, without a user input required,
 `dot-mail-outlook` implements the `client credentials` flow from Microsoft:
 
 - [Authenticate an IMAP, POP or SMTP connection using OAuth](https://learn.microsoft.com/en-us/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth)
