@@ -2,9 +2,9 @@
 
 ## Supported Versions
 
-| Version | Supported          | PHP Version    |
-|---------|--------------------|----------------|
-| 1.x     | :white_check_mark: | ~8.2 \|\| ~8.3 |
+| Version | Supported          | PHP Version                                                                                                           |
+|---------|--------------------|-----------------------------------------------------------------------------------------------------------------------|
+| 1.x     | :white_check_mark: | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-mail-outlook/dev-master) |
 
 ## Reporting Potential Security Issues
 
