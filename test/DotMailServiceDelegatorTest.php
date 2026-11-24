@@ -10,85 +10,99 @@ use Dot\Mail\Service\LogService;
 use Dot\Mail\Service\MailService;
 use Dot\MailOutlook\Authenticator\XOauth2OutlookAuthenticator;
 use Dot\MailOutlook\DotMailServiceDelegator;
-use Dot\MailOutlook\Service\XOauthTokenProviderService;
+use DotTest\MailOutlook\Fixture\InMemoryContainer;
+use DotTest\MailOutlook\Fixture\StubbedTokenProviderService;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use ReflectionClass;
+use ReflectionProperty;
+use RuntimeException;
+use stdClass;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 
 #[CoversClass(DotMailServiceDelegator::class)]
 class DotMailServiceDelegatorTest extends TestCase
 {
+    private const SERVICE_NAME = 'dot-mail.service.default';
+
     private EsmtpTransport $esmtpTransport;
     private MailService $mailService;
+    private XOauth2OutlookAuthenticator $authenticator;
 
     protected function setUp(): void
     {
-        $logService           = $this->createMock(LogService::class);
-        $emailMessage         = $this->createMock(Email::class);
-        $mailOptions          = $this->createMock(MailOptions::class);
         $this->esmtpTransport = new EsmtpTransport();
-        $this->mailService    = new MailService($logService, $emailMessage, $this->esmtpTransport, $mailOptions);
+        $this->mailService    = new MailService(
+            new LogService([]),
+            new Email(),
+            $this->esmtpTransport,
+            new MailOptions()
+        );
+        $this->authenticator  = new XOauth2OutlookAuthenticator(
+            new StubbedTokenProviderService(StubbedTokenProviderService::validConfig('unused.json'))
+        );
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
-     */
-    public function testWillSetXOauthOutlookAuthenticatorInDotMailServiceInstance(): void
+    public function testSetsOutlookAuthenticatorOnEsmtpTransport(): void
     {
-        $tokenProvider = $this->createMock(XOauthTokenProviderService::class);
-        $authenticator = new XOauth2OutlookAuthenticator($tokenProvider);
-        $container     = $this->createMock(ContainerInterface::class);
+        $container = new InMemoryContainer([XOauth2OutlookAuthenticator::class => $this->authenticator]);
 
-        $container->expects($this->once())->method('get')->willReturn($authenticator);
+        $result = (new DotMailServiceDelegator())($container, self::SERVICE_NAME, fn () => $this->mailService);
 
-        $delegatorReturn = (new DotMailServiceDelegator())(
-            $container,
-            '',
+        $this->assertSame($this->esmtpTransport, $result->getTransport());
+        $this->assertSame([$this->authenticator], $this->authenticatorsOf($this->esmtpTransport));
+    }
+
+    public function testReturnsSameService(): void
+    {
+        $container = new InMemoryContainer([XOauth2OutlookAuthenticator::class => $this->authenticator]);
+
+        $result = (new DotMailServiceDelegator())($container, self::SERVICE_NAME, fn () => $this->mailService);
+
+        $this->assertSame($this->mailService, $result);
+    }
+
+    public function testSendmailTransportDoesNotNeedAuthenticator(): void
+    {
+        $sendmailTransport = new SendmailTransport();
+        $this->mailService->setTransport($sendmailTransport);
+
+        $result = (new DotMailServiceDelegator())(
+            new InMemoryContainer(),
+            self::SERVICE_NAME,
             fn () => $this->mailService
         );
 
-        $this->assertInstanceOf(EsmtpTransport::class, $this->mailService->getTransport());
+        $this->assertSame($this->mailService, $result);
+        $this->assertSame($sendmailTransport, $result->getTransport());
+    }
 
-        $reflection         = new ReflectionClass($this->esmtpTransport);
-        $reflectionProperty = $reflection->getProperty('authenticators')->getValue($this->esmtpTransport);
+    public function testThrowsWhenCallbackDoesNotReturnMailService(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('The service "dot-mail.service.default" must be an instance of');
 
-        $this->assertContainsOnlyInstancesOf(XOauth2OutlookAuthenticator::class, $reflectionProperty);
+        (new DotMailServiceDelegator())(new InMemoryContainer(), self::SERVICE_NAME, fn () => new stdClass());
+    }
+
+    public function testThrowsWhenAuthenticatorHasWrongType(): void
+    {
+        $container = new InMemoryContainer([XOauth2OutlookAuthenticator::class => new stdClass()]);
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('stdClass given');
+
+        (new DotMailServiceDelegator())($container, self::SERVICE_NAME, fn () => $this->mailService);
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
+     * @return array<mixed>
      */
-    public function testWillNotSetXOauthOutlookAuthenticatorOnInvalidTransport(): void
+    private function authenticatorsOf(EsmtpTransport $transport): array
     {
-        $tokenProvider = $this->createMock(XOauthTokenProviderService::class);
-        $authenticator = new XOauth2OutlookAuthenticator($tokenProvider);
-        $container     = $this->createMock(ContainerInterface::class);
+        $authenticators = (new ReflectionProperty(EsmtpTransport::class, 'authenticators'))->getValue($transport);
+        $this->assertIsArray($authenticators);
 
-        $container->expects($this->once())->method('get')->willReturn($authenticator);
-
-        $this->mailService->setTransport(new SendmailTransport());
-
-        $delegatorReturn = (new DotMailServiceDelegator())(
-            $container,
-            '',
-            fn () => $this->mailService
-        );
-
-        $this->assertInstanceOf(SendmailTransport::class, $this->mailService->getTransport());
-
-        $reflection         = new ReflectionClass($this->esmtpTransport);
-        $reflectionProperty = $reflection->getProperty('authenticators')->getValue($this->esmtpTransport);
-
-        $this->assertNotContains(XOauth2OutlookAuthenticator::class, $reflectionProperty);
+        return $authenticators;
     }
 }

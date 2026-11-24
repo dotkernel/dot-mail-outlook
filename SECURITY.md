@@ -2,9 +2,12 @@
 
 ## Supported Versions
 
-| Version | Supported          | PHP Version                                                                                                           |
-|---------|--------------------|-----------------------------------------------------------------------------------------------------------------------|
-| 1.x     | :white_check_mark: | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-mail-outlook/dev-master) |
+| Version | Supported          | PHP Version                                                                                                        |
+|---------|--------------------|--------------------------------------------------------------------------------------------------------------------|
+| 2.x     | :white_check_mark: | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-mail-outlook/dev-2.0) |
+| 0.x     | :x:                | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-mail-outlook/0.3)     |
+
+There is no 1.x release. Version 2.0.0 follows 0.3.
 
 ## Reporting Potential Security Issues
 

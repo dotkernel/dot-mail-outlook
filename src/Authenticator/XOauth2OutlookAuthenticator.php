@@ -6,17 +6,19 @@ namespace Dot\MailOutlook\Authenticator;
 
 use Dot\DependencyInjection\Attribute\Inject;
 use Dot\MailOutlook\Service\XOauthTokenProviderService;
-use JsonException;
+use RuntimeException;
 use Symfony\Component\Mailer\Transport\Smtp\Auth\AuthenticatorInterface;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 
 use function base64_encode;
 
+/**
+ * SASL XOAUTH2 authenticator that gets a new token from XOauthTokenProviderService when it is necessary.
+ *
+ * Adapted from Symfony\Component\Mailer\Transport\Smtp\Auth\XOAuth2Authenticator.
+ */
 readonly class XOauth2OutlookAuthenticator implements AuthenticatorInterface
 {
-    /**
-     * Adapted from Symfony\Component\Mailer\Transport\Smtp\Auth\XOAuth2Authenticator but getting the token dynamically.
-     */
     #[Inject(XOauthTokenProviderService::class)]
     public function __construct(
         private XOauthTokenProviderService $tokenProvider,
@@ -29,9 +31,9 @@ readonly class XOauth2OutlookAuthenticator implements AuthenticatorInterface
     }
 
     /**
-     * @see https://developers.google.com/google-apps/gmail/xoauth2_protocol#the_sasl_xoauth2_mechanism
+     * @see https://learn.microsoft.com/en-us/exchange/client-developer/legacy-protocols/how-to-authenticate-an-imap-pop-smtp-application-by-using-oauth
      *
-     * @throws JsonException
+     * @throws RuntimeException
      */
     public function authenticate(EsmtpTransport $client): void
     {
