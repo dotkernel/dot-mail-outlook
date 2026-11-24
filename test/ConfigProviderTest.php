@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DotTest\MailOutlook;
 
+use Dot\DependencyInjection\Factory\AttributedServiceFactory;
 use Dot\MailOutlook\Authenticator\XOauth2OutlookAuthenticator;
 use Dot\MailOutlook\ConfigProvider;
 use Dot\MailOutlook\DotMailServiceDelegator;
@@ -12,45 +13,46 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
 
+/**
+ * @phpstan-import-type DependencyConfig from ConfigProvider
+ */
 #[CoversClass(ConfigProvider::class)]
 class ConfigProviderTest extends TestCase
 {
+    /** @var array{dependencies: DependencyConfig} */
     private array $config;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->config = (new ConfigProvider())();
     }
 
     public function testHasDependencies(): void
     {
-        $this->assertArrayHasKey('dependencies', $this->config);
+        $this->assertSame((new ConfigProvider())->getDependencies(), $this->config['dependencies']);
     }
 
     public function testDependenciesHasFactories(): void
     {
-        $this->assertArrayHasKey('factories', $this->config['dependencies']);
-        $this->assertArrayHasKey(
-            XOauthTokenProviderService::class,
-            $this->config['dependencies']['factories']
-        );
-        $this->assertArrayHasKey(
-            EsmtpTransportFactory::class,
-            $this->config['dependencies']['factories']
-        );
-        $this->assertArrayHasKey(
-            XOauth2OutlookAuthenticator::class,
+        $this->assertSame(
+            [
+                XOauthTokenProviderService::class  => AttributedServiceFactory::class,
+                XOauth2OutlookAuthenticator::class => AttributedServiceFactory::class,
+            ],
             $this->config['dependencies']['factories']
         );
     }
 
+    public function testDoesNotRegisterEsmtpTransportFactory(): void
+    {
+        $this->assertArrayNotHasKey(EsmtpTransportFactory::class, $this->config['dependencies']['factories']);
+    }
+
     public function testDependenciesHasDelegators(): void
     {
-        $this->assertArrayHasKey('delegators', $this->config['dependencies']);
-
         $this->assertSame(
-            [DotMailServiceDelegator::class],
-            $this->config['dependencies']['delegators']['dot-mail.service.default']
+            ['dot-mail.service.default' => [DotMailServiceDelegator::class]],
+            $this->config['dependencies']['delegators']
         );
     }
 }

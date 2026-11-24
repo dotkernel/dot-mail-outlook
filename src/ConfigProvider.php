@@ -7,10 +7,18 @@ namespace Dot\MailOutlook;
 use Dot\DependencyInjection\Factory\AttributedServiceFactory;
 use Dot\MailOutlook\Authenticator\XOauth2OutlookAuthenticator;
 use Dot\MailOutlook\Service\XOauthTokenProviderService;
-use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransportFactory;
 
+/**
+ * @phpstan-type DependencyConfig array{
+ *     delegators: array<string, list<class-string>>,
+ *     factories: array<class-string, class-string>
+ * }
+ */
 class ConfigProvider
 {
+    /**
+     * @return array{dependencies: DependencyConfig}
+     */
     public function __invoke(): array
     {
         return [
@@ -18,6 +26,9 @@ class ConfigProvider
         ];
     }
 
+    /**
+     * @return DependencyConfig
+     */
     public function getDependencies(): array
     {
         return [
@@ -28,10 +39,8 @@ class ConfigProvider
             ],
             'factories'  => [
                 XOauthTokenProviderService::class  => AttributedServiceFactory::class,
-                EsmtpTransportFactory::class       => AttributedServiceFactory::class,
                 XOauth2OutlookAuthenticator::class => AttributedServiceFactory::class,
             ],
-            'aliases'    => [],
         ];
     }
 }

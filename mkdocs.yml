@@ -1,0 +1,20 @@
+docs_dir: docs/book
+site_dir: docs/html
+extra:
+  project: Packages
+  current_version: v2
+  versions:
+    - v2
+nav:
+  - Home: index.md
+  - v2:
+      - Overview: v2/overview.md
+      - Installation: v2/installation.md
+      - Configuration: v2/configuration.md
+      - Usage: v2/usage.md
+      - "Upgrading from 0.x": v2/upgrading.md
+site_name: dot-mail-outlook
+site_description: "Dotkernel's Microsoft Outlook ESMTP email service"
+repo_url: "https://github.com/dotkernel/dot-mail-outlook"
+plugins:
+  - search

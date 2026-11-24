@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+// Set the tenant before access_code_url, because access_code_url contains it.
 $tenant = '';
 
 return [
     'xoauth2_outlook' => [
-        "tokenCacheFile"  => '',
+        // A writable file path. The package creates the file with mode 0600.
+        "tokenCacheFile"  => getcwd() . '/data/cache/outlook-token.json',
         "tenant"          => $tenant,
         "access_code_url" => "https://login.microsoftonline.com/{$tenant}/oauth2/v2.0/token",
         "client_id"       => '',

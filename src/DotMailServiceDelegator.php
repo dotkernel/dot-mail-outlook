@@ -4,41 +4,58 @@ declare(strict_types=1);
 
 namespace Dot\MailOutlook;
 
-use Dot\Mail\Service\MailService as DotMailService;
+use Dot\Mail\Service\MailServiceInterface;
 use Dot\MailOutlook\Authenticator\XOauth2OutlookAuthenticator;
-use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use RuntimeException;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 
-use function assert;
+use function get_debug_type;
+use function sprintf;
 
-class DotMailServiceDelegator implements DelegatorFactoryInterface
+/**
+ * Sets the Outlook XOAUTH2 authenticator on the ESMTP transport of a dot-mail service.
+ *
+ * Register it as a delegator of a dot-mail service in any container that supports delegators.
+ */
+class DotMailServiceDelegator
 {
     /**
-     * @param string $name
+     * @param callable(): mixed $callback
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
+     * @throws RuntimeException
      */
-    public function __invoke(
-        ContainerInterface $container,
-        $name,
-        callable $callback,
-        ?array $options = null
-    ): DotMailService {
-        /** @var DotMailService $mailService */
+    public function __invoke(ContainerInterface $container, string $name, callable $callback): MailServiceInterface
+    {
         $mailService = $callback();
-
-        $outlookAuthenticator = $container->get(XOauth2OutlookAuthenticator::class);
-
-        assert($outlookAuthenticator instanceof XOauth2OutlookAuthenticator);
-
-        $esmtpTransport = $mailService->getTransport();
-
-        if ($esmtpTransport instanceof EsmtpTransport) {
-            $esmtpTransport->setAuthenticators([$outlookAuthenticator]);
+        if (! $mailService instanceof MailServiceInterface) {
+            throw new RuntimeException(sprintf(
+                'The service "%s" must be an instance of %s, %s given.',
+                $name,
+                MailServiceInterface::class,
+                get_debug_type($mailService)
+            ));
         }
+
+        $transport = $mailService->getTransport();
+        if (! $transport instanceof EsmtpTransport) {
+            return $mailService;
+        }
+
+        $authenticator = $container->get(XOauth2OutlookAuthenticator::class);
+        if (! $authenticator instanceof XOauth2OutlookAuthenticator) {
+            throw new RuntimeException(sprintf(
+                'The service "%s" must be an instance of %s, %s given.',
+                XOauth2OutlookAuthenticator::class,
+                XOauth2OutlookAuthenticator::class,
+                get_debug_type($authenticator)
+            ));
+        }
+
+        $transport->setAuthenticators([$authenticator]);
 
         return $mailService;
     }
