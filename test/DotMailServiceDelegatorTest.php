@@ -29,9 +29,9 @@ class DotMailServiceDelegatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $logService           = $this->createMock(LogService::class);
-        $emailMessage         = $this->createMock(Email::class);
-        $mailOptions          = $this->createMock(MailOptions::class);
+        $logService           = $this->createStub(LogService::class);
+        $emailMessage         = $this->createStub(Email::class);
+        $mailOptions          = $this->createStub(MailOptions::class);
         $this->esmtpTransport = new EsmtpTransport();
         $this->mailService    = new MailService($logService, $emailMessage, $this->esmtpTransport, $mailOptions);
     }
@@ -43,7 +43,7 @@ class DotMailServiceDelegatorTest extends TestCase
      */
     public function testWillSetXOauthOutlookAuthenticatorInDotMailServiceInstance(): void
     {
-        $tokenProvider = $this->createMock(XOauthTokenProviderService::class);
+        $tokenProvider = $this->createStub(XOauthTokenProviderService::class);
         $authenticator = new XOauth2OutlookAuthenticator($tokenProvider);
         $container     = $this->createMock(ContainerInterface::class);
 
@@ -70,7 +70,7 @@ class DotMailServiceDelegatorTest extends TestCase
      */
     public function testWillNotSetXOauthOutlookAuthenticatorOnInvalidTransport(): void
     {
-        $tokenProvider = $this->createMock(XOauthTokenProviderService::class);
+        $tokenProvider = $this->createStub(XOauthTokenProviderService::class);
         $authenticator = new XOauth2OutlookAuthenticator($tokenProvider);
         $container     = $this->createMock(ContainerInterface::class);
 
